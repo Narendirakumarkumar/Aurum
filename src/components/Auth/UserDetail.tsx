@@ -12,10 +12,12 @@ import Swal from 'sweetalert2';
 type userFormFields = {
   EmailAddress: string;
 };
+
 export const UserDetail = React.memo(
   (props?: { data: any; setIsClicked: Function }) => {
     console.log(props?.data);
     const [isEmailExists, setIsEmailExists] = useState<string>('');
+
     const navigation = useNavigate();
 
     const validate = (values: any) => {
@@ -93,6 +95,7 @@ export const UserDetail = React.memo(
         LastName: '',
         DisplayName: '',
         EmailAddress: '',
+        Password: '12345',
         Active: '',
       },
       validate: validate,
@@ -117,39 +120,6 @@ export const UserDetail = React.memo(
             </div>
 
             <div className='card-body'>
-              <div className='row'>
-                <div className='col-8'>
-                  <label htmlFor='Id' className={formLabel}>
-                    User Id
-                  </label>
-                  <div className='input-group input-group-solid'>
-                    <input
-                      className={formInput}
-                      id='Id'
-                      name='Id'
-                      type='text'
-                      value={formik.values.Id}
-                      onChange={formik.handleChange}
-                      disabled
-                    />
-                  </div>
-                </div>
-                <div className='col-4'>
-                  <label htmlFor='vendorName' className={formLabel}>
-                    User Name
-                  </label>
-                  <div className='input-group input-group-solid'>
-                    <input
-                      className={formInput}
-                      id='UserName'
-                      name='UserName'
-                      type='text'
-                      value={formik.values.UserName}
-                      onChange={formik.handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
               <div className='row'>
                 <div className='col-4'>
                   <div className='form-group'>
@@ -246,6 +216,21 @@ export const UserDetail = React.memo(
               </div>
 
               <div className='row'>
+                <div className='col-6'>
+                  <label htmlFor='vendorName' className={formLabel}>
+                    User Name
+                  </label>
+                  <div className='input-group input-group-solid'>
+                    <input
+                      className={formInput}
+                      id='UserName'
+                      name='UserName'
+                      type='text'
+                      value={formik.values.UserName}
+                      onChange={formik.handleChange}
+                    />
+                  </div>
+                </div>
                 <div className='col-6'>
                   <div className='form-check py-auto'>
                     <label

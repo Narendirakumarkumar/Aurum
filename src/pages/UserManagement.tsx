@@ -29,7 +29,7 @@ type UserProfileData = {
   RoleId: number;
 };
 
-type UserData = {
+type UserProfile = {
   Id: String;
   EnterpriseId: null | number;
   CompanyId: null | number;
@@ -49,8 +49,7 @@ type UserData = {
 export const UserManagement = () => {
   const [isClicked, setIsClicked] = useState<boolean>();
   const [userDetail, setUserDetail] = useState<UserProfileData>();
-  const [user, setUser] = useState<UserData>([] as UserData);
-
+  console.log(new Date().toString());
   const fetchUsers = () => {
     return axios.get(
       `https://invoiceprocessingapi.azurewebsites.net/api/v1/UserProfile`
@@ -205,7 +204,10 @@ export const UserManagement = () => {
                           <UserGrid
                             setUserDetail={setUserDetail}
                             setIsClicked={setIsClicked}
-                            data={data?.data}
+                            data={data?.data.filter(
+                              (arr) => arr.Active === true
+                            )}
+                            page='UserManagement'
                           />
                         ) : (
                           <UserDetail
@@ -226,14 +228,54 @@ export const UserManagement = () => {
                         id='kt_vtab_pane_6'
                         role='tabpanel'
                       >
-                        {/* Nulla est ullamco ut irure incididunt nulla Lorem Lorem minim irure officia enim reprehenderit. */}
+                        {isLoading ? (
+                          <Loading />
+                        ) : isError ? (
+                          <Error />
+                        ) : data?.data && !isClicked ? (
+                          <UserGrid
+                            setUserDetail={setUserDetail}
+                            setIsClicked={setIsClicked}
+                            data={data?.data.filter((arr) => {
+                              console.log(
+                                arr.CreatedTimestamp.toString().split('T')
+                              );
+                              arr.CreatedTimestamp.toString().split('T') ==
+                                new Date().toString();
+                            })}
+                            page='UserManagement'
+                          />
+                        ) : (
+                          <UserDetail
+                            data={userDetail}
+                            setIsClicked={setIsClicked}
+                          />
+                        )}
                       </div>
                       <div
                         className='tab-pane fade'
                         id='kt_vtab_pane_7'
                         role='tabpanel'
                       >
-                        {/* Nulla est ullamco ut irure incididunt nulla Lorem Lorem minim irure officia enim reprehenderit. */}
+                        {isLoading ? (
+                          <Loading />
+                        ) : isError ? (
+                          <Error />
+                        ) : data?.data && !isClicked ? (
+                          <UserGrid
+                            setUserDetail={setUserDetail}
+                            setIsClicked={setIsClicked}
+                            data={data?.data.filter(
+                              (arr) => arr.Active === false
+                            )}
+                            page='UserManagement'
+                          />
+                        ) : (
+                          <UserDetail
+                            data={userDetail}
+                            setIsClicked={setIsClicked}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>

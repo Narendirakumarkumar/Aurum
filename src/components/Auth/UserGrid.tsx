@@ -26,16 +26,11 @@ export const UserGrid = (props: {
   setUserDetail: Function;
   setIsClicked: Function;
   data: any;
+  page: string;
 }) => {
   const navigation = useNavigate();
 
   const data: UserProfileData = props.data;
-
-  let userData: UserProfileData = [...props.data];
-
-  userData = userData.filter((arr) => arr.Active === false);
-
-  console.log(userData);
 
   // const columns = Column
 

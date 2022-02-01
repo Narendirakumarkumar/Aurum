@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 import { baseURL } from '../../helpers/AxiosInstance';
 import { AxiosGet, AxiosInsert } from '../../helpers/Axios';
 import { useFormik, Formik, Form, Field } from 'formik';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 type registerFormFields = {
   EmailAddress: string;
@@ -11,6 +12,12 @@ type registerFormFields = {
   cfrmpassword: string;
   UserName: string;
 };
+type roles = {
+  RoleId: number;
+  Name: string;
+  Description: string;
+  IsActive: boolean;
+}[];
 
 export const RegisterComp = () => {
   const formInput = 'form-control form-control-solid mt-1';
@@ -21,8 +28,18 @@ export const RegisterComp = () => {
   const [isInserted, setIsInserted] = useState<boolean>(false);
   const [isNotInserted, setIsNotInserted] = useState<boolean>(true);
   const [isEmailExists, setIsEmailExists] = useState<string>('');
+  const [userRoles, setUserRoles] = useState<roles>([] as roles);
   //   let isEmailExists: string = '';
   const navigation = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get('https://invoiceprocessingapi.azurewebsites.net/api/v1/role')
+      .then((res?: any) => {
+        setUserRoles(res?.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
   const switchViewToLogin = () => {
     setTimeout(() => navigation('/Login'), 1);
   };
@@ -269,6 +286,7 @@ export const RegisterComp = () => {
                             )}
                           </div>
                         </div>
+
                         <div className='col-12'>
                           <div className='form-group text-start'>
                             <label htmlFor='role' className={formLabel}>
@@ -281,8 +299,8 @@ export const RegisterComp = () => {
                               value={formik.values.role}
                               onChange={formik.handleChange}
                             >
-                              {roles.map((role, index) => (
-                                <option key={index}>{role}</option>
+                              {userRoles.map((role) => (
+                                <option key={role.RoleId}>{role.Name}</option>
                               ))}
                             </select>
                           </div>
